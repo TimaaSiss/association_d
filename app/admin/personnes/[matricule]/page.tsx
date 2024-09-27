@@ -121,11 +121,11 @@ export default function PersonneDetail() {
       case "Gold":
         return "url('/images/or.jpg')";
       case "Silver":
-        return "url('/images/arg.avif')";
+        return "url('/images/argent.jpg')";
       case "Bronze":
         return "url('/images/bronze.jpg')";
       case "Other":
-        return "url('/images/tii.avif')";
+        return "url('/images/other.jpg')";
       default:
         return "url('/images/default.jpg')";
     }
@@ -147,6 +147,7 @@ export default function PersonneDetail() {
         useCORS: true,
       }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png", 1.0);
+
         const pdf = new jsPDF({
           orientation: "portrait",
           unit: "mm",
@@ -173,12 +174,12 @@ export default function PersonneDetail() {
         pdf.addImage(
           imgData,
           "PNG",
-          xOffset,
-          yOffset,
+          xOffset, // Ajuste cette valeur si nécessaire
+          yOffset, // Ajuste cette valeur pour un meilleur positionnement vertical
           imgWidth - 10,
-          imgHeight - 10,
-          undefined
+          imgHeight - 10
         );
+
         pdf.save("carte_personne.pdf");
       });
     }
@@ -192,18 +193,18 @@ export default function PersonneDetail() {
         title="Télécharger la carte"
       >
         <ArrowDownTrayIcon className="h-6 w-6" />
-      </button>
+      </button>{" "}
       {personne && (
         <div
           id="card" // Ajoutez un ID pour référencer l'élément à télécharger
           className="bg-white shadow-lg rounded-lg p-6 max-w-2xl w-full border-t-4 relative flex flex-col"
           style={{
             backgroundImage: getCategoryBackground(personne.categorie),
-            backgroundSize: "cover",
+            backgroundSize: "100%auto", // Ajuste l'image à l'intérieur de la carte
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute top-2 right-2 p-2 bg-white rounded-full z-50">
+          {/* <div className="absolute top-2 right-2 p-2 bg-white rounded-full z-50">
             <Image
               src="/images/FDGD.jpg"
               alt="Logo de la Fondation"
@@ -211,7 +212,7 @@ export default function PersonneDetail() {
               height={50}
               className="rounded-full object-contain"
             />
-          </div>
+          </div> */}
           <div className={`text-left mb-4 ${getTextColor(personne.categorie)}`}>
             <p className="text-xl font-bold">Nom : {personne.nom}</p>
             <p className="text-xl font-bold">Prénom : {personne.prenom}</p>
