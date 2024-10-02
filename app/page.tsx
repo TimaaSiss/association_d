@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Loading from "./admin/loading";
+import Loading from "./components/loading";
 
 export default function Home() {
   const { data: session, status } = useSession();

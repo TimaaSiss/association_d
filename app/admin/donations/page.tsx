@@ -14,7 +14,7 @@ import {
   HiOutlineTrash,
   HiOutlineX,
 } from "react-icons/hi";
-import Loading from "../loading";
+import Loading from "../../components/loading";
 
 interface Donation {
   matricule: number;

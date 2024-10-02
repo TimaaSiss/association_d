@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Loading from "../admin/loading";
+import Loading from "./loading";
 import { FaGem, FaCrown, FaStar } from "react-icons/fa";
 import { HiArrowLeft, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
@@ -145,8 +145,7 @@ const PersonnesCompleteInfo = () => {
                 </tr>
               ))}
             </tbody>
-            {/* Affichage du total  sous le tableau */}
-          </table>{" "}
+          </table>
           <tfoot>
             <tr className="bg-green-100">
               <td colSpan={2} className="px-4 py-2 text-left font-bold">
@@ -190,6 +189,17 @@ const PersonnesCompleteInfo = () => {
             </button>
           </div>
         )}
+
+        <div className="flex justify-center mt-8">
+          <a
+            href="https://don.clusterdigitalafrica.com/projet/index.php?projet=NDU="
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition"
+          >
+            Faire un don
+          </a>
+        </div>
       </div>
     </div>
   );

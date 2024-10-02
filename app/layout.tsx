@@ -5,7 +5,7 @@ import "./globals.css"; // Assurez-vous que ce fichier CSS existe et est valide
 import SessionProviderWrapper from "./SessionProviderWrapper"; // Assurez-vous que ce fichier existe et est valide
 
 export const metadata = {
-  title: "Donation Dama Guile",
+  title: "Fondation Dama Guile Diawara",
   description: "Description de Donation Dama Guile",
 };
 

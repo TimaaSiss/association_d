@@ -17,7 +17,7 @@ import {
   HiOutlineTrash,
   HiOutlineX,
 } from "react-icons/hi";
-import Loading from "../loading";
+import Loading from "../../components/loading";
 import { QRCodeCanvas } from "qrcode.react";
 const bronzeColor = "#cd7f32";
 
@@ -220,7 +220,7 @@ export default function PersonneList() {
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {personne.matricule}
+                      00{personne.matricule}
                     </td>
                     <td className="py-3 px-6 text-left flex items-center gap-2">
                       {personne.nom}

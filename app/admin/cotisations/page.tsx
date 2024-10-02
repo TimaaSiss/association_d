@@ -15,7 +15,7 @@ import {
   HiOutlineX,
 } from "react-icons/hi";
 
-import Loading from "../loading";
+import Loading from "../../components/loading";
 
 interface Cotisation {
   matricule: number;

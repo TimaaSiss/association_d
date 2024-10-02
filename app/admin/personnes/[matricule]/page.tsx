@@ -2,12 +2,13 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Loading from "../../loading";
+import Loading from "../../../components/loading";
 import { QRCode } from "react-qrcode-logo";
 import Image from "next/image";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { HiArrowLeft } from "react-icons/hi";
 
 interface Personne {
   matricule: number;
@@ -119,15 +120,13 @@ export default function PersonneDetail() {
       case "Diamond":
         return "url('/images/diament.jpg')";
       case "Gold":
-        return "url('/images/or.jpg')";
+        return "url('/images/ORR.jpg')";
       case "Silver":
         return "url('/images/argent.jpg')";
       case "Bronze":
         return "url('/images/bronze.jpg')";
       case "Other":
-        return "url('/images/other.jpg')";
-      default:
-        return "url('/images/default.jpg')";
+        return "url('/images/autre.jpg')";
     }
   };
 
@@ -188,6 +187,13 @@ export default function PersonneDetail() {
   return (
     <div className="p-6 bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen flex items-center justify-center">
       <button
+        onClick={() => (window.location.href = "/admin/personnes")}
+        className="absolute top-4 left-4 flex items-center px-4 py-2 text-black rounded transition"
+        aria-label="Retour à la page principale"
+      >
+        <HiArrowLeft className="h-5 w-5 mr-2" />
+      </button>
+      <button
         onClick={downloadCard}
         className="absolute top-4 right-4 p-2 text-black font-bold  "
         title="Télécharger la carte"
@@ -204,15 +210,14 @@ export default function PersonneDetail() {
             backgroundPosition: "center",
           }}
         >
-          {/* <div className="absolute top-2 right-2 p-2 bg-white rounded-full z-50">
+          <div className="absolute w-[100px] h-[100px] top-2 right-2 p-2 bg-white rounded-full z-50">
             <Image
               src="/images/FDGD.jpg"
               alt="Logo de la Fondation"
-              width={50}
-              height={50}
-              className="rounded-full object-contain"
+              fill
+              className="rounded-full object-cover"
             />
-          </div> */}
+          </div>
           <div className={`text-left mb-4 ${getTextColor(personne.categorie)}`}>
             <p className="text-xl font-bold">Nom : {personne.nom}</p>
             <p className="text-xl font-bold">Prénom : {personne.prenom}</p>
@@ -242,7 +247,7 @@ export default function PersonneDetail() {
 
           <div className="flex justify-end mt-auto">
             <QRCode
-              value={`${window.location.origin}/admin/cartes/${personne.matricule}`}
+              value={`${window.location.origin}/personne/${personne.matricule}`}
               size={100}
             />
           </div>

@@ -1,10 +1,12 @@
 "use client";
-
+import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import Loading from "../../loading";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/solid";
+import Loading from "@/app/components/loading";
+import Image from "next/image";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { HiPlus } from "react-icons/hi";
 
 interface Donation {
   matricule: number;
@@ -36,6 +38,19 @@ export default function Detail() {
   const [showCotisations, setShowCotisations] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null); // Référence pour le modal
+
+  useEffect(() => {
+    if (matricule) {
+      const storedImage = localStorage.getItem(`profileImage-${matricule}`);
+      if (storedImage) {
+        setProfileImage(storedImage);
+      }
+    }
+  }, [matricule]);
 
   useEffect(() => {
     if (matricule) {
@@ -90,6 +105,54 @@ export default function Detail() {
     }
   }, [matricule]);
 
+  const handleImageUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          const imageData = reader.result as string;
+          setProfileImage(imageData);
+          if (matricule) {
+            localStorage.setItem(`profileImage-${matricule}`, imageData);
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageRemove = (): void => {
+    setProfileImage(null);
+    if (matricule) {
+      localStorage.removeItem(`profileImage-${matricule}`); // Optionnel : supprimer l'image stockée
+    }
+  };
+
+  const handleImageClick = (): void => {
+    setIsImageModalOpen(true);
+  };
+
+  const handleCloseModal = (): void => {
+    setIsImageModalOpen(false);
+  };
+
+  // Fonction pour fermer le modal si on clique à l'extérieur
+  const handleClickOutside = (event: MouseEvent): void => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      handleCloseModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
   if (isLoading) return <Loading />;
   if (error)
     return <div className="text-red-500 text-center mt-4">{error}</div>;
@@ -110,6 +173,89 @@ export default function Detail() {
     <div className="p-6 bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen flex items-center justify-center">
       {personne && (
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-3xl w-full border-t-4 border-blue-500">
+          <div className="flex flex-col items-center mb-6">
+            <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
+              {profileImage ? (
+                <Image
+                  src={profileImage}
+                  alt="Profile"
+                  width={100}
+                  height={100}
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={handleImageClick}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  Aucune image
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+              style={{ display: "none" }}
+            />
+            <div className="absolute top-0 right-0 flex space-x-2"></div>
+          </div>
+          {isImageModalOpen && (
+            <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+              <div ref={modalRef} className="p-2 rounded-lg w-64 h-64">
+                <Image
+                  src={profileImage as string}
+                  alt="Profile"
+                  width={500}
+                  height={500}
+                  className="object-contain"
+                />
+                <button
+                  onClick={handleCloseModal}
+                  className="absolute top-2 right-2 text-black text-2xl"
+                ></button>
+              </div>
+            </div>
+          )}
+          <div className="flex items-center w-full">
+            {profileImage ? (
+              <div className="w-full flex justify-between items-center">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleImageRemove();
+                  }}
+                  className="flex items-center justify-center px-3 py-2 bg-black text-white rounded hover:bg-white hover:text-black hover:border-black-500 hover:border-2"
+                >
+                  Editer la photo
+                  <PencilIcon className="h-6 w-6 text-gray-700 cursor-pointer" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleImageRemove();
+                  }}
+                  className="flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded hover:bg-white hover:text-red-500 hover:border-red-500 hover:border-2"
+                >
+                  Supprimer la photo
+                  <TrashIcon className="h-6 w-6 cursor-pointer" />
+                </button>
+              </div>
+            ) : (
+              <div className="w-full flex justify-center items-center">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }}
+                  className="flex justify-center items-center bg-blue-400 px-4 py-2 rounded-lg hover:bg-black hover:text-white"
+                >
+                  Ajouter une image
+                  <HiPlus className="h-6 w-6 text-gray-700 cursor-pointer" />
+                </button>
+              </div>
+            )}
+          </div>
+
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
             {personne.prenom} {personne.nom}
           </h1>
@@ -136,6 +282,7 @@ export default function Detail() {
             </div>
           </div>
 
+          {/* Affichage des donations */}
           <div className="mt-6">
             <div
               className="flex justify-between items-center bg-gray-100 p-4 rounded-lg cursor-pointer"
@@ -168,6 +315,7 @@ export default function Detail() {
             )}
           </div>
 
+          {/* Affichage des cotisations */}
           <div className="mt-6">
             <div
               className="flex justify-between items-center bg-gray-100 p-4 rounded-lg cursor-pointer"
