@@ -170,7 +170,7 @@ export default function Detail() {
   const totalMontant = totalDonations + totalCotisations;
 
   return (
-    <div className="p-6 bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen flex items-center justify-center">
+    <div className="p-6 bg-gradient-to-r  min-h-screen flex items-center justify-center">
       {personne && (
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-3xl w-full border-t-4 border-blue-500">
           <div className="flex flex-col items-center mb-6">

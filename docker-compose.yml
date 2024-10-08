@@ -24,7 +24,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-
+      - ./association.sql:/docker-entrypoint-initdb.d/association.sql 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
