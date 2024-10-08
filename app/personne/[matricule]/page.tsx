@@ -170,9 +170,18 @@ export default function Detail() {
   const totalMontant = totalDonations + totalCotisations;
 
   return (
-    <div className="p-6 bg-gradient-to-r  min-h-screen flex items-center justify-center">
+    <div
+      className="p-6 bg-gradient-to-r min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: "url('/images/horse.avif')",
+        backgroundSize: "cover", // ajustement de l'image
+        backgroundPosition: "center", // centrage de l'image
+        backgroundRepeat: "no-repeat", // pour éviter que l'image se répète
+      }}
+    >
       {personne && (
-        <div className="bg-white shadow-lg rounded-lg p-8 max-w-3xl w-full border-t-4 border-blue-500">
+        <div className="bg-white bg-opacity-70 shadow-lg rounded-lg p-8 max-w-3xl w-full border-t-4 border-blue-500">
+          {" "}
           <div className="flex flex-col items-center mb-6">
             <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
               {profileImage ? (
@@ -222,7 +231,7 @@ export default function Detail() {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    handleImageRemove();
+                    fileInputRef.current?.click();
                   }}
                   className="flex items-center justify-center px-3 py-2 bg-black text-white rounded hover:bg-white hover:text-black hover:border-black-500 hover:border-2"
                 >
@@ -255,11 +264,9 @@ export default function Detail() {
               </div>
             )}
           </div>
-
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
             {personne.prenom} {personne.nom}
           </h1>
-
           <div className="grid grid-cols-2 gap-6">
             <div>
               <p className="text-lg text-gray-700">
@@ -281,7 +288,6 @@ export default function Detail() {
               </p>
             </div>
           </div>
-
           {/* Affichage des donations */}
           <div className="mt-6">
             <div
@@ -314,7 +320,6 @@ export default function Detail() {
               </div>
             )}
           </div>
-
           {/* Affichage des cotisations */}
           <div className="mt-6">
             <div
@@ -349,7 +354,6 @@ export default function Detail() {
               </div>
             )}
           </div>
-
           <div className="mt-6 text-center">
             <h3 className="text-2xl font-bold text-red-600">
               Montant Total : {totalMontant.toFixed(2)} FCFA
