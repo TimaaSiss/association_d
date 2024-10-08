@@ -2,7 +2,7 @@
 import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
-  host: 'localhost', // Remplacez par votre hôte MySQL
+  host: 'db', // Remplacez par votre hôte MySQL
   user: 'Fatoumata', // Remplacez par votre utilisateur MySQL
   password: '1234', // Remplacez par votre mot de passe MySQL
   database: 'association',
